@@ -4,7 +4,7 @@ name: Deploy Godot Web Export to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - 'exports/web/**'
       - '.github/workflows/deploy-pages.yml'
