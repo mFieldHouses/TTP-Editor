@@ -114,6 +114,34 @@ current_tab = 0
 layout_mode = 2
 metadata/_tab_index = 0
 
+[node name="Label" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer/Tab 1" unique_id=8690041]
+layout_mode = 2
+text = "label 1"
+
+[node name="Label2" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer/Tab 1" unique_id=1040027478]
+layout_mode = 2
+text = "label 1"
+
+[node name="Label3" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer/Tab 1" unique_id=804014940]
+layout_mode = 2
+text = "label 1"
+
+[node name="Label4" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer/Tab 1" unique_id=172308065]
+layout_mode = 2
+text = "label 1"
+
+[node name="Label5" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer/Tab 1" unique_id=387128368]
+layout_mode = 2
+text = "label 1"
+
+[node name="Label6" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer/Tab 1" unique_id=528902247]
+layout_mode = 2
+text = "label 1"
+
+[node name="Label7" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer/Tab 1" unique_id=656336819]
+layout_mode = 2
+text = "label 1"
+
 [node name="Tab 2" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer" unique_id=577681245]
 visible = false
 layout_mode = 2
