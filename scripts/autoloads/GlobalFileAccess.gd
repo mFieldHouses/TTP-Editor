@@ -2,11 +2,15 @@ extends Node
 
 var fd : FileDialog = FileDialog.new()
 
+signal progress_changed(progress_factor : float)
+
 func _ready() -> void:
 	fd = FileDialog.new()
 	fd.use_native_dialog = true
 	fd.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	add_child(fd)
+	
+	WebFileAccess.progress.connect(_progress_changed)
 
 func open(filters : String = "*") -> FileAccess:
 	match OS.get_name():
@@ -55,3 +59,6 @@ func _open_native(filters : String) -> FileAccess:
 	target_file = FileAccess.open("user://imported/" + result_path.get_file(), FileAccess.READ)
 	
 	return target_file
+
+func _progress_changed(current_count : int, max_count : int) -> void:
+	progress_changed.emit(float(current_count)/float(max_count))

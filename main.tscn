@@ -3,14 +3,6 @@
 [ext_resource type="Theme" uid="uid://b0e40jr1wqanf" path="res://resources/themes/default.tres" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://chch48at0toib" path="res://main.gd" id="2_0xm2m"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ig7tw"]
-content_margin_left = 0.0
-content_margin_top = 0.0
-content_margin_right = 0.0
-content_margin_bottom = 0.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-corner_detail = 5
-
 [sub_resource type="LabelSettings" id="LabelSettings_h2yge"]
 font_size = 18
 
@@ -32,9 +24,10 @@ bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2yge"]
-bg_color = Color(0.09239706, 0.09239707, 0.092397, 1)
+bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
+corner_radius_top_left = 10
 
-[node name="Root" type="Control" unique_id=1810646056 node_paths=PackedStringArray("error_background", "file_error_dialog", "not_a_project_file_dialog", "file_menu_button", "editor_menu_button", "side_bar_v_split")]
+[node name="Root" type="Control" unique_id=1810646056 node_paths=PackedStringArray("error_background", "upload_file_window", "upload_file_window_progress_bar", "file_error_dialog", "not_a_project_file_dialog", "file_menu_button", "editor_menu_button", "side_bar_v_split")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,11 +37,22 @@ grow_vertical = 2
 theme = ExtResource("1_ig7tw")
 script = ExtResource("2_0xm2m")
 error_background = NodePath("ErrorBackground")
+upload_file_window = NodePath("UploadFileWindow")
+upload_file_window_progress_bar = NodePath("UploadFileWindow/MarginContainer/VBoxContainer/ProgressBar")
 file_error_dialog = NodePath("FileErrorDialog")
 not_a_project_file_dialog = NodePath("NotAProjectFileDialog")
-file_menu_button = NodePath("RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox/FileMenuButton")
-editor_menu_button = NodePath("RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox/EditorMenuButton")
+file_menu_button = NodePath("RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox/FileMenuButton")
+editor_menu_button = NodePath("RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox/EditorMenuButton")
 side_bar_v_split = NodePath("RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer")
+
+[node name="background" type="ColorRect" parent="." unique_id=222009543]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101960786, 0.101960786, 0.101960786, 1)
 
 [node name="RootVBox" type="VBoxContainer" parent="." unique_id=1895701372]
 layout_mode = 1
@@ -59,18 +63,14 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="ToolBarRootPanel" type="PanelContainer" parent="RootVBox" unique_id=1730904174]
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ig7tw")
-
-[node name="MarginContainer" type="MarginContainer" parent="RootVBox/ToolBarRootPanel" unique_id=1261921915]
+[node name="ToolbarRootMarginContainer" type="MarginContainer" parent="RootVBox" unique_id=1261921915]
 layout_mode = 2
 theme_override_constants/margin_right = 3
 
-[node name="ToolBarRootHBox" type="HBoxContainer" parent="RootVBox/ToolBarRootPanel/MarginContainer" unique_id=1695112848]
+[node name="ToolBarRootHBox" type="HBoxContainer" parent="RootVBox/ToolbarRootMarginContainer" unique_id=1695112848]
 layout_mode = 2
 
-[node name="FileMenuButton" type="MenuButton" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=412004504]
+[node name="FileMenuButton" type="MenuButton" parent="RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox" unique_id=412004504]
 layout_mode = 2
 text = "File"
 item_count = 3
@@ -81,14 +81,14 @@ popup/item_1/id = 1
 popup/item_2/text = "Export Project..."
 popup/item_2/id = 2
 
-[node name="EditorMenuButton" type="MenuButton" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=2116537913]
+[node name="EditorMenuButton" type="MenuButton" parent="RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox" unique_id=2116537913]
 layout_mode = 2
 text = "Editor"
 item_count = 1
 popup/item_0/text = "Interface Scale..."
 popup/item_0/id = 0
 
-[node name="ToolVersionOptionButton" type="OptionButton" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=338437500]
+[node name="ToolVersionOptionButton" type="OptionButton" parent="RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox" unique_id=338437500]
 modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 10
@@ -100,17 +100,17 @@ popup/item_0/id = 0
 popup/item_1/text = "v1.0"
 popup/item_1/id = 1
 
-[node name="TTPLabel2" type="Label" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=1770720921]
+[node name="TTPLabel2" type="Label" parent="RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox" unique_id=1770720921]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "TTPEditor  "
 label_settings = SubResource("LabelSettings_h2yge")
 
-[node name="VSeparator" type="VSeparator" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=1837258770]
+[node name="VSeparator" type="VSeparator" parent="RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox" unique_id=1837258770]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="TTPLabel" type="Label" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=913790006]
+[node name="TTPLabel" type="Label" parent="RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox" unique_id=913790006]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "mFieldHouses.github.com/TTP-Editor/ "
@@ -145,10 +145,10 @@ tab_2/title = "Source Images"
 
 [node name="ProjectSettingsMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer" unique_id=1656959414]
 layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 metadata/_tab_index = 0
 metadata/_tab_name = "Project"
 
@@ -171,6 +171,7 @@ text = "New Project"
 placeholder_text = "Enter a name..."
 
 [node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1493282639]
+visible = false
 layout_mode = 2
 
 [node name="ProjectBaseLayerResolutionHBox2" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1930577840]
@@ -297,11 +298,16 @@ horizontal_alignment = 1
 [node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/CellConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=159087397]
 layout_mode = 2
 
-[node name="ViewPortRootPanel" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer" unique_id=78163555]
+[node name="MarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer" unique_id=573602453]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+
+[node name="ViewPortRootPanel" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer/MarginContainer" unique_id=78163555]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_h2yge")
 
-[node name="OpenCreateProjectPromptLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/ViewPortRootPanel" unique_id=778023135]
+[node name="OpenCreateProjectPromptLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel" unique_id=778023135]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 4
@@ -309,7 +315,7 @@ text = "No project is currently loaded.
 Start by opening (File > Open Project...) or creating (File > New Project) a project ."
 horizontal_alignment = 1
 
-[node name="AddImagesPromptLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/ViewPortRootPanel" unique_id=1826896384]
+[node name="AddImagesPromptLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel" unique_id=1826896384]
 layout_mode = 2
 size_flags_horizontal = 4
 text = "This project contains no source images yet.
@@ -324,11 +330,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.5058824)
+color = Color(0, 0, 0, 0.63529414)
 
 [node name="FileErrorDialog" type="AcceptDialog" parent="." unique_id=1401568841]
 oversampling_override = 1.0
 position = Vector2i(0, 36)
+popup_window = true
 force_native = true
 dialog_text = "Something went wrong with loading your selected file! Please try again."
 
@@ -336,5 +343,36 @@ dialog_text = "Something went wrong with loading your selected file! Please try 
 oversampling_override = 1.0
 position = Vector2i(0, 36)
 size = Vector2i(399, 100)
+popup_window = true
 force_native = true
 dialog_text = "The selected file is not a TTP project. Please select a different file and try again."
+
+[node name="UploadFileWindow" type="Window" parent="." unique_id=468806493]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(346, 58)
+visible = false
+wrap_controls = true
+force_native = true
+
+[node name="MarginContainer" type="MarginContainer" parent="UploadFileWindow" unique_id=1873605752]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UploadFileWindow/MarginContainer" unique_id=276102389]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="UploadFileWindow/MarginContainer/VBoxContainer" unique_id=1981297851]
+layout_mode = 2
+text = "Uploading file..."
+
+[node name="ProgressBar" type="ProgressBar" parent="UploadFileWindow/MarginContainer/VBoxContainer" unique_id=1821035415]
+layout_mode = 2
+max_value = 1.0

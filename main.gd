@@ -1,7 +1,11 @@
 extends Control
 
-# Error windows
+# (Error) windows
 @export var error_background : ColorRect
+
+@export var upload_file_window : Window
+@export var upload_file_window_progress_bar : ProgressBar
+
 @export var file_error_dialog : AcceptDialog
 @export var not_a_project_file_dialog : AcceptDialog
 
@@ -16,6 +20,8 @@ func _ready() -> void:
 	_initialize_container_sizes.call_deferred()
 	
 	error_background.visible = false
+	upload_file_window.min_size = upload_file_window.get_child(0).size
+	GlobalFileAccess.progress_changed.connect(upload_file_window_progress_bar.set_value)
 	
 	# Connect signals
 	file_menu_button.get_popup().id_pressed.connect(_file_option_chosen)
@@ -32,7 +38,9 @@ func _file_option_chosen(id : int) -> void:
 		0: # New Project
 			print("New project")
 		1: # Open Project
+			_notification_pop_up(upload_file_window)
 			var error : GlobalProjectManager.ProjectOpenError = await GlobalProjectManager.load_project()
+			_notification_pop_out(upload_file_window)
 			
 			match error:
 				GlobalProjectManager.ProjectOpenError.NOT_ZIP:
@@ -51,3 +59,11 @@ func _dialog_pop_up(dialog : AcceptDialog) -> void:
 	await dialog.confirmed
 	
 	error_background.visible = false
+
+func _notification_pop_up(window : Window) -> void:
+	error_background.visible = true
+	window.popup_centered()
+
+func _notification_pop_out(window : Window) -> void:
+	error_background.visible = false
+	window.visible = false
