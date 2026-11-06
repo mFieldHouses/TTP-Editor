@@ -1,5 +1,5 @@
 
-name: Deploy Godot Web Export to GitHub Pages v2
+name: Deploy Godot Web Export to GitHub Pages
 
 on:
   push:
