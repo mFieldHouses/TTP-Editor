@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dumrck1gsfcm7"]
 
 [ext_resource type="Theme" uid="uid://b0e40jr1wqanf" path="res://resources/themes/default.tres" id="1_ig7tw"]
+[ext_resource type="Script" uid="uid://chch48at0toib" path="res://main.gd" id="2_0xm2m"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ig7tw"]
 content_margin_left = 0.0
@@ -9,6 +10,9 @@ content_margin_right = 0.0
 content_margin_bottom = 0.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_detail = 5
+
+[sub_resource type="LabelSettings" id="LabelSettings_h2yge"]
+font_size = 18
 
 [sub_resource type="LabelSettings" id="LabelSettings_0xm2m"]
 font_size = 14
@@ -19,10 +23,18 @@ font_color = Color(1, 1, 1, 0.53333336)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0xm2m"]
 bg_color = Color(0.13319641, 0.13319641, 0.13319635, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1bvp3"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2yge"]
 bg_color = Color(0.09239706, 0.09239707, 0.092397, 1)
 
-[node name="Root" type="Control" unique_id=1810646056]
+[node name="Root" type="Control" unique_id=1810646056 node_paths=PackedStringArray("error_background", "file_error_dialog", "not_a_project_file_dialog", "file_menu_button", "editor_menu_button", "side_bar_v_split")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -30,6 +42,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_ig7tw")
+script = ExtResource("2_0xm2m")
+error_background = NodePath("ErrorBackground")
+file_error_dialog = NodePath("FileErrorDialog")
+not_a_project_file_dialog = NodePath("NotAProjectFileDialog")
+file_menu_button = NodePath("RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox/FileMenuButton")
+editor_menu_button = NodePath("RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox/EditorMenuButton")
+side_bar_v_split = NodePath("RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer")
 
 [node name="RootVBox" type="VBoxContainer" parent="." unique_id=1895701372]
 layout_mode = 1
@@ -46,10 +65,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ig7tw")
 
 [node name="MarginContainer" type="MarginContainer" parent="RootVBox/ToolBarRootPanel" unique_id=1261921915]
 layout_mode = 2
-theme_override_constants/margin_left = 3
-theme_override_constants/margin_top = 3
 theme_override_constants/margin_right = 3
-theme_override_constants/margin_bottom = 3
 
 [node name="ToolBarRootHBox" type="HBoxContainer" parent="RootVBox/ToolBarRootPanel/MarginContainer" unique_id=1695112848]
 layout_mode = 2
@@ -59,10 +75,10 @@ layout_mode = 2
 text = "File"
 item_count = 3
 popup/item_0/text = "New Project"
-popup/item_0/id = 1
-popup/item_1/text = "Open project..."
-popup/item_1/id = 0
-popup/item_2/text = "Save Project..."
+popup/item_0/id = 0
+popup/item_1/text = "Open Project..."
+popup/item_1/id = 1
+popup/item_2/text = "Export Project..."
 popup/item_2/id = 2
 
 [node name="EditorMenuButton" type="MenuButton" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=2116537913]
@@ -73,14 +89,22 @@ popup/item_0/text = "Interface Scale..."
 popup/item_0/id = 0
 
 [node name="ToolVersionOptionButton" type="OptionButton" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=338437500]
+modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 10
+flat = true
 selected = 0
 item_count = 2
 popup/item_0/text = "Dev"
 popup/item_0/id = 0
 popup/item_1/text = "v1.0"
 popup/item_1/id = 1
+
+[node name="TTPLabel2" type="Label" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=1770720921]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "TTPEditor  "
+label_settings = SubResource("LabelSettings_h2yge")
 
 [node name="VSeparator" type="VSeparator" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=1837258770]
 layout_mode = 2
@@ -89,7 +113,7 @@ theme_override_constants/separation = 10
 [node name="TTPLabel" type="Label" parent="RootVBox/ToolBarRootPanel/MarginContainer/ToolBarRootHBox" unique_id=913790006]
 layout_mode = 2
 size_flags_horizontal = 8
-text = "mathiasFieldHouses.github.com/ttp-editor/ "
+text = "mFieldHouses.github.com/TTP-Editor/ "
 label_settings = SubResource("LabelSettings_0xm2m")
 
 [node name="WorkSpaceRootSplitContainer" type="HSplitContainer" parent="RootVBox" unique_id=583516416]
@@ -97,40 +121,220 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 theme_override_icons/grabber = SubResource("PlaceholderTexture2D_0xm2m")
-split_offsets = PackedInt32Array(58)
-split_offset = 58
+split_offsets = PackedInt32Array(350)
+split_offset = 350
 
 [node name="SideBarRootPanel" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer" unique_id=1327798156]
-custom_minimum_size = Vector2(225, 0)
+custom_minimum_size = Vector2(350, 0)
 custom_maximum_size = Vector2(700, -1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0xm2m")
 
-[node name="TabContainer" type="TabContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel" unique_id=1300034111]
+[node name="VSplitContainer" type="VSplitContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel" unique_id=2003812086]
+layout_mode = 2
+split_offsets = PackedInt32Array(200)
+split_offset = 200
+
+[node name="TabContainer" type="TabContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer" unique_id=1300034111]
+custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 current_tab = 0
+tab_0/title = "Project"
+tab_1/title = "Cells"
+tab_2/title = "Source Images"
 
-[node name="Tab 1" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer" unique_id=292251176]
+[node name="ProjectSettingsMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer" unique_id=1656959414]
 layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 metadata/_tab_index = 0
+metadata/_tab_name = "Project"
 
-[node name="Tab 2" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer" unique_id=577681245]
+[node name="ProjectSettingsVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer" unique_id=2041465170]
+layout_mode = 2
+
+[node name="ProjectNameHBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1656777230]
+layout_mode = 2
+
+[node name="ProjectNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ProjectNameHBox" unique_id=1950631412]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Project Name"
+
+[node name="ProjectName" type="LineEdit" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ProjectNameHBox" unique_id=170012122]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+text = "New Project"
+placeholder_text = "Enter a name..."
+
+[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1493282639]
+layout_mode = 2
+
+[node name="ProjectBaseLayerResolutionHBox2" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1930577840]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ProjectTypeLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ProjectBaseLayerResolutionHBox2" unique_id=187032594]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Base Layer Resolution"
+text_overrun_behavior = 3
+
+[node name="BaseLayerResolution" type="SpinBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ProjectBaseLayerResolutionHBox2" unique_id=589056581]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+min_value = 2.0
+max_value = 4096.0
+value = 4.0
+suffix = "cells"
+
+[node name="OverlayLayerCountHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=831575693]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="OverlayLayerCountLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/OverlayLayerCountHBox" unique_id=86023703]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Overlay Layer Count"
+text_overrun_behavior = 3
+
+[node name="OverlayLayerCount" type="SpinBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/OverlayLayerCountHBox" unique_id=877527768]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+max_value = 2.0
+value = 2.0
+suffix = "layers"
+
+[node name="TileExpansionsEnabledHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=221327917]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TileExpansionsEnabledLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/TileExpansionsEnabledHBox" unique_id=1313446604]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Tile Expansions Enabled"
+text_overrun_behavior = 3
+
+[node name="TileExpansionsEnabled" type="CheckButton" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/TileExpansionsEnabledHBox" unique_id=171674397]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+button_pressed = true
+flat = true
+
+[node name="ColorModulationEnabledHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1395989705]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="ColorModulationsEnabledLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ColorModulationEnabledHBox" unique_id=450095078]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Color Modulation Enabled"
+text_overrun_behavior = 3
+
+[node name="ColorModulationEnabled" type="CheckButton" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ColorModulationEnabledHBox" unique_id=1882427185]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+button_pressed = true
+flat = true
+
+[node name="CellsMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer" unique_id=1567498172]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
+metadata/_tab_name = "Cells"
 
-[node name="Tab 3" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/TabContainer" unique_id=2041465170]
+[node name="CellsScrollContainer" type="ScrollContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/CellsMarginContainer" unique_id=1257880168]
+layout_mode = 2
+
+[node name="CellsItemList" type="ItemList" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/CellsMarginContainer/CellsScrollContainer" unique_id=752135603]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+item_count = 3
+item_0/text = "asdasdasd"
+item_1/text = "asdasddsdsdsds"
+item_2/text = "aaaaaaa"
+
+[node name="SourceImagesMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer" unique_id=2107476504]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
+metadata/_tab_name = "Source Images"
+
+[node name="Source Images" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/SourceImagesMarginContainer" unique_id=577681245]
+layout_mode = 2
+
+[node name="ImageEntry" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/SourceImagesMarginContainer/Source Images" unique_id=1831065416]
+layout_mode = 2
+
+[node name="CellConfigurationPanelContainer" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer" unique_id=2084254055]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1bvp3")
+
+[node name="MarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/CellConfigurationPanelContainer" unique_id=1117783388]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/CellConfigurationPanelContainer/MarginContainer" unique_id=880057358]
+layout_mode = 2
+
+[node name="CellConfigurationLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/CellConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=1926974288]
+layout_mode = 2
+text = "Cell Configuration"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/CellConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=159087397]
+layout_mode = 2
 
 [node name="ViewPortRootPanel" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer" unique_id=78163555]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_h2yge")
 
 [node name="OpenCreateProjectPromptLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/ViewPortRootPanel" unique_id=778023135]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
-text = "No project is currently loaded. Start by opening or creating a project
-in the top left corner of the window."
+text = "No project is currently loaded. 
+Start by opening (File > Open Project...) or creating (File > New Project) a project ."
 horizontal_alignment = 1
+
+[node name="AddImagesPromptLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/ViewPortRootPanel" unique_id=1826896384]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "This project contains no source images yet.
+Add some in the Source Images tab in the top left."
+horizontal_alignment = 1
+
+[node name="ErrorBackground" type="ColorRect" parent="." unique_id=1413946035]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.5058824)
+
+[node name="FileErrorDialog" type="AcceptDialog" parent="." unique_id=1401568841]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+force_native = true
+dialog_text = "Something went wrong with loading your selected file! Please try again."
+
+[node name="NotAProjectFileDialog" type="AcceptDialog" parent="." unique_id=1441162696]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(399, 100)
+force_native = true
+dialog_text = "The selected file is not a TTP project. Please select a different file and try again."

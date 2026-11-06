@@ -17,9 +17,17 @@ run/low_processor_mode=true
 boot_splash/bg_color=Color(0.047557652, 0.047557652, 0.04755763, 1)
 boot_splash/stretch_mode=0
 boot_splash/image="uid://bybqthnjckb1k"
+config/icon="uid://ct2ys4wig2wa0"
+
+[autoload]
+
+WebFileAccess="*uid://cs1k6ywveetut"
+GlobalFileAccess="*uid://cy3tbxy52tuuv"
+GlobalProjectManager="*uid://bo1q5s2r3hv4o"
 
 [display]
 
+window/size/mode=2
 window/stretch/aspect="expand"
 
 [physics]
