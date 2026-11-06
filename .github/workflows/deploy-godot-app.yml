@@ -7,7 +7,7 @@ on:
       - master
     paths:
       - 'exports/web/**'
-      - '.github/workflows/deploy-pages.yml'
+      - '.github/workflows/deploy-godot-app.yml'
 
   workflow_dispatch:
 
