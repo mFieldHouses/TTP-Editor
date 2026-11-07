@@ -25,7 +25,7 @@ func open(filters : String = "*") -> FileAccess:
 func save(file : FileAccess) -> Error:
 	match OS.get_name():
 		"Web":
-			await _save_web(file)
+			_save_web(file)
 		"Linux", "macOS", "Windows":
 			await _save_native(file)
 	
@@ -76,7 +76,16 @@ func _progress_changed(current_count : int, max_count : int) -> void:
 	progress_changed.emit(float(current_count)/float(max_count))
 
 func _save_web(file : FileAccess) -> void:
-	pass
+	JavaScriptBridge.download_buffer(file.get_buffer(file.get_length()), file.get_path().get_file(), "application/zip")
 
 func _save_native(file : FileAccess) -> void:
-	pass
+	fd.current_dir = OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
+	fd.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	fd.add_filter("*.zip", "ZIP Files", "application/zip")
+	fd.popup_file_dialog()
+	
+	var result_path : String = await fd.file_selected
+	var target_file : FileAccess = FileAccess.open(result_path, FileAccess.WRITE)
+	
+	target_file.store_buffer(file.get_buffer(file.get_length()))
+	target_file.close()

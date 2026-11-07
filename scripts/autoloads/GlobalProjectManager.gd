@@ -23,7 +23,7 @@ func load_project() -> ProjectOpenError:
 	
 	return ProjectOpenError.SUCCESS
 
-func save_project(name : String) -> void:
+func save_project(_name : String) -> void:
 	var zp : ZIPPacker = ZIPPacker.new()
 	
 	if !DirAccess.dir_exists_absolute("user://saved"):
@@ -36,6 +36,7 @@ func save_project(name : String) -> void:
 	zp.close()
 	
 	var file : FileAccess = FileAccess.open("user://saved/New Project.zip", FileAccess.READ)
-
+	GlobalFileAccess.save(file)
+	
 func new_project() -> void:
 	pass

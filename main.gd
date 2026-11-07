@@ -49,7 +49,7 @@ func _file_option_chosen(id : int) -> void:
 					_dialog_pop_up(not_a_project_file_dialog)
 			
 		2: # Export Project
-			print("Export project")
+			GlobalProjectManager.save_project("test")
 
 func _dialog_pop_up(dialog : AcceptDialog) -> void:
 	error_background.visible = true
