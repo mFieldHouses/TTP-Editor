@@ -24,7 +24,18 @@ func load_project() -> ProjectOpenError:
 	return ProjectOpenError.SUCCESS
 
 func save_project(name : String) -> void:
-	pass
+	var zp : ZIPPacker = ZIPPacker.new()
+	
+	if !DirAccess.dir_exists_absolute("user://saved"):
+		DirAccess.make_dir_absolute("user://saved")
+	
+	zp.open("user://saved/New Project.zip", ZIPPacker.APPEND_CREATE)
+	zp.start_file("config.ttpc")
+	zp.write_file(JSON.stringify("{'test': 'Hello World!'}").to_utf8_buffer())
+	zp.close_file()
+	zp.close()
+	
+	var file : FileAccess = FileAccess.open("user://saved/New Project.zip", FileAccess.READ)
 
 func new_project() -> void:
 	pass

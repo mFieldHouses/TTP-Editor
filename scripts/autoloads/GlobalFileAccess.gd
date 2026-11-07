@@ -12,6 +12,7 @@ func _ready() -> void:
 	
 	WebFileAccess.progress.connect(_progress_changed)
 
+## Opens a project file from the device.
 func open(filters : String = "*") -> FileAccess:
 	match OS.get_name():
 		"Web":
@@ -21,6 +22,16 @@ func open(filters : String = "*") -> FileAccess:
 		
 	return null
 
+func save(file : FileAccess) -> Error:
+	match OS.get_name():
+		"Web":
+			await _save_web(file)
+		"Linux", "macOS", "Windows":
+			await _save_native(file)
+	
+	return OK
+
+## Function that handles loading files when running in Web
 func _open_web(filters : String) -> FileAccess:
 	WebFileAccess.open(filters)
 	
@@ -40,6 +51,7 @@ func _open_web(filters : String) -> FileAccess:
 	
 	return file
 
+## Function that handles loading files when running native mode (including as an addon)
 func _open_native(filters : String) -> FileAccess:
 	fd.current_dir = OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
 	fd.add_filter("*.zip", "ZIP Files", "application/zip")
@@ -62,3 +74,9 @@ func _open_native(filters : String) -> FileAccess:
 
 func _progress_changed(current_count : int, max_count : int) -> void:
 	progress_changed.emit(float(current_count)/float(max_count))
+
+func _save_web(file : FileAccess) -> void:
+	pass
+
+func _save_native(file : FileAccess) -> void:
+	pass
