@@ -56,6 +56,7 @@ func _on_file_loaded(args: Array) -> void:
 	var file_type: String = splitted_args[0].get_slice(":", 1). get_slice(";", 0)
 	var base64_data: String = splitted_args[1]
 	loaded.emit(file_name, file_type, base64_data)
+	GlobalFileAccess._file_dialogue_closed.emit(GlobalFileAccess.FileDialogCloseStatus.SUCCESS, file_name, base64_data)
 
 func _on_file_progress(args: Array) -> void:
 	var current_bytes: int = args[0]
@@ -64,9 +65,11 @@ func _on_file_progress(args: Array) -> void:
 
 func _on_file_error(args: Array) -> void:
 	error.emit()
+	GlobalFileAccess._file_dialogue_closed.emit(GlobalFileAccess.FileDialogCloseStatus.ERROR, "")
 
 func _on_file_cancelled(args: Array) -> void:
 	upload_cancelled.emit()
+	GlobalFileAccess._file_dialogue_closed.emit(GlobalFileAccess.FileDialogCloseStatus.CANCEL, "")
 
 const js_source_code = """
 function godotFileAccessWebStart() {

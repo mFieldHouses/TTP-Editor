@@ -1,5 +1,9 @@
 extends Control
 
+# Containers
+@export var side_bar_root_panel_container: PanelContainer
+
+
 # (Error) windows
 @export var error_background : ColorRect
 
@@ -33,6 +37,11 @@ func _ready() -> void:
 	# Connect signals
 	file_menu_button.get_popup().id_pressed.connect(_file_option_chosen)
 	tile_container.tile_pos_selected.connect(_tile_button_pressed)
+	GlobalProjectManager.project_loaded.connect(func(): side_bar_root_panel_container.modulate.a = 1.0)
+	GlobalProjectManager.project_loaded.connect(open_create_project_prompt_label.set_visible.bind(false))
+	
+	side_bar_root_panel_container.modulate.a = 0.0
+	
 	
 	#$NotAProjectFileDialog.popup_centered(Vector2i(50,50))
 	#JavaScriptBridge.download_buffer(PackedByteArray([1,5,3,6,1,2,5,1]), "test_file.txt")
@@ -44,11 +53,8 @@ func _initialize_container_sizes() -> void:
 func _file_option_chosen(id : int) -> void:
 	match id:
 		0: # New Project
-			open_create_project_prompt_label.visible = false
-			print("New project")
+			GlobalProjectManager.new_project()
 		1: # Open Project
-			open_create_project_prompt_label.visible = false
-			
 			_notification_pop_up(upload_file_window)
 			var error : GlobalProjectManager.ProjectOpenError = await GlobalProjectManager.load_project()
 			_notification_pop_out(upload_file_window)

@@ -9,7 +9,7 @@ signal _remove_tile(pos : Vector2i)
 
 func _ready() -> void:
 	TileConfigurationDatabase.configuration_changed.connect(update_layout)
-	update_layout.call_deferred()
+	GlobalProjectManager.project_loaded.connect(update_layout)
 
 func clear_old_tile_buttons() -> void:
 	for button : TileButton in tile_buttons:
