@@ -1,6 +1,6 @@
 extends Node
 
-var project_configuration : LayerConfiguration
+var project_configuration : LayerConfiguration = LayerConfiguration.new()
 
 enum ProjectOpenError {
 	SUCCESS,
@@ -33,7 +33,7 @@ func save_project(_name : String) -> void:
 	
 	zp.open("user://saved/New Project.zip", ZIPPacker.APPEND_CREATE)
 	zp.start_file("config.ttpc")
-	zp.write_file(JSON.stringify("{'test': 'Hello World!'}").to_utf8_buffer())
+	zp.write_file(JSON.stringify(project_configuration.get_save_object(), " ").to_utf8_buffer())
 	zp.close_file()
 	zp.close()
 	

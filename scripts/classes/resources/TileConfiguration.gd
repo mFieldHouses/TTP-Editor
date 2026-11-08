@@ -1,9 +1,15 @@
 extends Resource
 class_name TileConfiguration
 
+@export var uninitialized : bool = true
+
 @export var tile_name : String = "":
 	set(x):
 		tile_name = x
+		
+		if x.is_empty():
+			tile_name = "Unnamed Tile"
+		
 		emit_changed()
 		
 @export var source_texture_name : String = "":
@@ -21,7 +27,13 @@ class_name TileConfiguration
 		randomization_directions = x
 		emit_changed()
 
-func get_save_object() -> Dictionary:
+func initialize_values() -> void:
+	tile_name = "New Tile"
+	source_texture_name = ""
+	tile_size = tile_size
+	randomization_directions = randomization_directions
+
+func get_save_object() -> Dictionary[String, Variant]:
 	return {
 		"tile_name": tile_name,
 		"source_texture_name": source_texture_name,

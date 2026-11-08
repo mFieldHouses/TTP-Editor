@@ -21,3 +21,14 @@ func clear_configurations() -> void:
 
 func load_configurations() -> void:
 	pass
+
+func get_save_object() -> Dictionary[Vector2i, Dictionary]:
+	var result : Dictionary[Vector2i, Dictionary] = {}
+	
+	for pos : Vector2i in tile_configurations.keys():
+		var config : TileConfiguration = tile_configurations[pos]
+		
+		if !config.uninitialized:
+			result[pos] = config.get_save_object()
+	
+	return result

@@ -2,7 +2,9 @@
 
 [ext_resource type="Theme" uid="uid://b0e40jr1wqanf" path="res://resources/themes/default.tres" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://chch48at0toib" path="res://main.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://b50k4ytw8vj33" path="res://scripts/tile_configuration_parent.gd" id="3_1bvp3"]
 [ext_resource type="Script" uid="uid://cvgmkr65py4sy" path="res://scripts/classes/nodes/TileContainer.gd" id="3_h2yge"]
+[ext_resource type="Script" uid="uid://chxlhgbxvnfh7" path="res://scripts/tile_configuration.gd" id="4_lquwl"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_h2yge"]
 font_size = 18
@@ -31,7 +33,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="Root" type="Control" unique_id=1810646056 node_paths=PackedStringArray("error_background", "upload_file_window", "upload_file_window_progress_bar", "file_error_dialog", "not_a_project_file_dialog", "open_create_project_prompt_label", "file_menu_button", "editor_menu_button", "side_bar_v_split")]
+[node name="Root" type="Control" unique_id=1810646056 node_paths=PackedStringArray("error_background", "upload_file_window", "upload_file_window_progress_bar", "file_error_dialog", "not_a_project_file_dialog", "open_create_project_prompt_label", "file_menu_button", "editor_menu_button", "side_bar_v_split", "tile_container", "tile_configuration_parent")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -49,6 +51,8 @@ open_create_project_prompt_label = NodePath("RootVBox/WorkSpaceRootSplitContaine
 file_menu_button = NodePath("RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox/FileMenuButton")
 editor_menu_button = NodePath("RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox/EditorMenuButton")
 side_bar_v_split = NodePath("RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer")
+tile_container = NodePath("RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel/TileGridRootAspectRatioContainer/TileGridRootMarginContainer/TileContainer")
+tile_configuration_parent = NodePath("RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer")
 
 [node name="background" type="ColorRect" parent="." unique_id=222009543]
 layout_mode = 1
@@ -126,12 +130,11 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 theme_override_icons/grabber = SubResource("PlaceholderTexture2D_0xm2m")
-split_offsets = PackedInt32Array(350)
-split_offset = 350
+split_offsets = PackedInt32Array(550)
+split_offset = 550
 
 [node name="SideBarRootPanel" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer" unique_id=1327798156]
 custom_minimum_size = Vector2(350, 0)
-custom_maximum_size = Vector2(700, -1)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0xm2m")
 
@@ -305,28 +308,79 @@ layout_mode = 2
 [node name="ImageEntry" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/SourceImagesMarginContainer/Source Images" unique_id=1831065416]
 layout_mode = 2
 
-[node name="CellConfigurationPanelContainer" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer" unique_id=2084254055]
+[node name="TileConfigurationPanelContainer" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer" unique_id=2084254055]
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1bvp3")
 
-[node name="MarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/CellConfigurationPanelContainer" unique_id=1117783388]
+[node name="MarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer" unique_id=1117783388]
 layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 7
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/CellConfigurationPanelContainer/MarginContainer" unique_id=880057358]
+[node name="VBoxContainer" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer" unique_id=880057358 node_paths=PackedStringArray("tile_configuration_container", "no_tile_selected_label")]
 layout_mode = 2
+script = ExtResource("3_1bvp3")
+tile_configuration_container = NodePath("TileConfiguration")
+no_tile_selected_label = NodePath("NoTileSelectedLabe")
 
-[node name="CellConfigurationLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/CellConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=1926974288]
+[node name="TileConfigurationLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=1926974288]
 layout_mode = 2
-text = "Cell Configuration"
+text = "Tile Configuration"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/CellConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=159087397]
+[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=159087397]
 layout_mode = 2
+
+[node name="NoTileSelectedLabe" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=345027019]
+layout_mode = 2
+size_flags_vertical = 6
+text = "No tile selected to configure."
+horizontal_alignment = 1
+
+[node name="TileConfiguration" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=1613134191 node_paths=PackedStringArray("tile_name", "tile_uninitialized_v_box", "tile_configuration_properties_v_box", "initialize_tile_button")]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+script = ExtResource("4_lquwl")
+tile_name = NodePath("TileConfigurationPropertiesVBox/TileNameVBox/TileName")
+tile_uninitialized_v_box = NodePath("TileUninitializedVBox")
+tile_configuration_properties_v_box = NodePath("TileConfigurationPropertiesVBox")
+initialize_tile_button = NodePath("TileUninitializedVBox/InitializeTileButton")
+
+[node name="TileConfigurationPropertiesVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration" unique_id=2056257152]
+layout_mode = 2
+
+[node name="TileNameVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox" unique_id=457166939]
+layout_mode = 2
+tooltip_text = "How many different tiles this layer will consist of, both on the X and Y axis"
+theme_override_constants/separation = 10
+
+[node name="TileNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox/TileNameVBox" unique_id=451091875]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Tile Name"
+text_overrun_behavior = 3
+
+[node name="TileName" type="LineEdit" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox/TileNameVBox" unique_id=1149129709]
+layout_mode = 2
+text = "New Tile"
+
+[node name="TileUninitializedVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration" unique_id=1986440178]
+layout_mode = 2
+size_flags_vertical = 6
+
+[node name="Label" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileUninitializedVBox" unique_id=1724477260]
+layout_mode = 2
+text = "This tile has no configurations yet. Would you like to initialize it?"
+horizontal_alignment = 1
+
+[node name="InitializeTileButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileUninitializedVBox" unique_id=1640609164]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Initialize Tile"
 
 [node name="MarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer" unique_id=573602453]
 layout_mode = 2
@@ -364,6 +418,7 @@ script = ExtResource("3_h2yge")
 metadata/_custom_type_script = "uid://cvgmkr65py4sy"
 
 [node name="RootTutorialMarginContainer" type="MarginContainer" parent="." unique_id=1963241074]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0

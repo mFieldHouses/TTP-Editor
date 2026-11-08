@@ -22,9 +22,10 @@ config/icon="uid://ct2ys4wig2wa0"
 [autoload]
 
 WebFileAccess="*uid://cs1k6ywveetut"
+WebUtils="*uid://c7x2mf25lgvpr"
 GlobalFileAccess="*uid://cy3tbxy52tuuv"
 GlobalProjectManager="*uid://bo1q5s2r3hv4o"
-TileConfigurationDataBase="*uid://l1owvvgnagbt"
+TileConfigurationDatabase="*uid://l1owvvgnagbt"
 
 [display]
 

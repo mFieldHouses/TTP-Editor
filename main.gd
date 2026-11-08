@@ -18,6 +18,10 @@ extends Control
 
 @export var side_bar_v_split : VSplitContainer
 
+# Miscellaneous nodes
+@export var tile_container: TileContainer
+@export var tile_configuration_parent: VBoxContainer
+
 func _ready() -> void:
 	# Call function at end of frame to make sure all containers have taken on their correct sizes
 	_initialize_container_sizes.call_deferred()
@@ -28,6 +32,7 @@ func _ready() -> void:
 	
 	# Connect signals
 	file_menu_button.get_popup().id_pressed.connect(_file_option_chosen)
+	tile_container.tile_pos_selected.connect(_tile_button_pressed)
 	
 	#$NotAProjectFileDialog.popup_centered(Vector2i(50,50))
 	#JavaScriptBridge.download_buffer(PackedByteArray([1,5,3,6,1,2,5,1]), "test_file.txt")
@@ -73,3 +78,6 @@ func _notification_pop_up(window : Window) -> void:
 func _notification_pop_out(window : Window) -> void:
 	error_background.visible = false
 	window.visible = false
+
+func _tile_button_pressed(pos : Vector2i) -> void:
+	tile_configuration_parent.show_tile_configuration(TileConfigurationDatabase.tile_configurations[pos])

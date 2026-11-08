@@ -14,7 +14,9 @@ static func from_save_object(object : Dictionary) -> LayerConfiguration:
 
 func get_save_object() -> Dictionary:
 	var object : Dictionary = {
-		
+		"layer_name": layer_name,
+		"resolution": resolution,
+		"tiles": TileConfigurationDatabase.get_save_object()
 	}
 	
 	return object
