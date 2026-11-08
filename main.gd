@@ -9,6 +9,9 @@ extends Control
 @export var file_error_dialog : AcceptDialog
 @export var not_a_project_file_dialog : AcceptDialog
 
+# Labels
+@export var open_create_project_prompt_label: Label
+
 # Toolbar
 @export var file_menu_button : MenuButton
 @export var editor_menu_button : MenuButton
@@ -36,8 +39,11 @@ func _initialize_container_sizes() -> void:
 func _file_option_chosen(id : int) -> void:
 	match id:
 		0: # New Project
+			open_create_project_prompt_label.visible = false
 			print("New project")
 		1: # Open Project
+			open_create_project_prompt_label.visible = false
+			
 			_notification_pop_up(upload_file_window)
 			var error : GlobalProjectManager.ProjectOpenError = await GlobalProjectManager.load_project()
 			_notification_pop_out(upload_file_window)

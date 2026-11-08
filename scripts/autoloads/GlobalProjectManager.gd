@@ -1,5 +1,7 @@
 extends Node
 
+var project_configuration : LayerConfiguration
+
 enum ProjectOpenError {
 	SUCCESS,
 	NOT_ZIP,

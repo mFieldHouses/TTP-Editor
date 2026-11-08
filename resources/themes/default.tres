@@ -86,6 +86,77 @@ corner_radius_top_right = 1
 corner_radius_bottom_right = 1
 corner_radius_bottom_left = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7y767"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.75)
+draw_center = false
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n3ooy"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fhmfe"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jdy55"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_djf3b"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x73fj"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 1
+corner_radius_top_right = 1
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_222dm"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -231,6 +302,18 @@ corner_radius_top_right = 8
 content_margin_top = 5.0
 bg_color = Color(0.101960786, 0.101960786, 0.101960786, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hvbjw"]
+content_margin_left = 15.0
+content_margin_top = 12.0
+content_margin_right = 15.0
+content_margin_bottom = 12.0
+bg_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 2
+
 [sub_resource type="FontVariation" id="FontVariation_jygh6"]
 base_font = ExtResource("1_sn1o5")
 variation_embolden = -0.39
@@ -244,6 +327,12 @@ Button/styles/hover = SubResource("StyleBoxFlat_kyium")
 Button/styles/hover_pressed = SubResource("StyleBoxFlat_lmgqb")
 Button/styles/normal = SubResource("StyleBoxFlat_ipp3m")
 Button/styles/pressed = SubResource("StyleBoxFlat_dgxsq")
+FoldableContainer/styles/focus = SubResource("StyleBoxFlat_7y767")
+FoldableContainer/styles/panel = SubResource("StyleBoxFlat_n3ooy")
+FoldableContainer/styles/title_collapsed_hover_panel = SubResource("StyleBoxFlat_fhmfe")
+FoldableContainer/styles/title_collapsed_panel = SubResource("StyleBoxFlat_jdy55")
+FoldableContainer/styles/title_hover_panel = SubResource("StyleBoxFlat_djf3b")
+FoldableContainer/styles/title_panel = SubResource("StyleBoxFlat_x73fj")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_222dm")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_kpyni")
 PopupMenu/constants/h_separation = 4
@@ -260,3 +349,4 @@ TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_iga00")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_m5j5c")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_x2xen")
 TabContainer/styles/tabbar_background = SubResource("StyleBoxFlat_h2yge")
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_hvbjw")

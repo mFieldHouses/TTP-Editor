@@ -24,11 +24,16 @@ config/icon="uid://ct2ys4wig2wa0"
 WebFileAccess="*uid://cs1k6ywveetut"
 GlobalFileAccess="*uid://cy3tbxy52tuuv"
 GlobalProjectManager="*uid://bo1q5s2r3hv4o"
+TileConfigurationDataBase="*uid://l1owvvgnagbt"
 
 [display]
 
 window/size/mode=2
 window/stretch/aspect="expand"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_todo/plugin.cfg")
 
 [physics]
 

@@ -2,6 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://b0e40jr1wqanf" path="res://resources/themes/default.tres" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://chch48at0toib" path="res://main.gd" id="2_0xm2m"]
+[ext_resource type="Script" uid="uid://cvgmkr65py4sy" path="res://scripts/classes/nodes/TileContainer.gd" id="3_h2yge"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_h2yge"]
 font_size = 18
@@ -26,8 +27,11 @@ corner_detail = 5
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2yge"]
 bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
-[node name="Root" type="Control" unique_id=1810646056 node_paths=PackedStringArray("error_background", "upload_file_window", "upload_file_window_progress_bar", "file_error_dialog", "not_a_project_file_dialog", "file_menu_button", "editor_menu_button", "side_bar_v_split")]
+[node name="Root" type="Control" unique_id=1810646056 node_paths=PackedStringArray("error_background", "upload_file_window", "upload_file_window_progress_bar", "file_error_dialog", "not_a_project_file_dialog", "open_create_project_prompt_label", "file_menu_button", "editor_menu_button", "side_bar_v_split")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -41,6 +45,7 @@ upload_file_window = NodePath("UploadFileWindow")
 upload_file_window_progress_bar = NodePath("UploadFileWindow/MarginContainer/VBoxContainer/ProgressBar")
 file_error_dialog = NodePath("FileErrorDialog")
 not_a_project_file_dialog = NodePath("NotAProjectFileDialog")
+open_create_project_prompt_label = NodePath("RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel/OpenCreateProjectPromptLabel")
 file_menu_button = NodePath("RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox/FileMenuButton")
 editor_menu_button = NodePath("RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox/EditorMenuButton")
 side_bar_v_split = NodePath("RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer")
@@ -139,71 +144,94 @@ split_offset = 200
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 current_tab = 0
-tab_0/title = "Project"
+tab_0/title = "Layer"
 tab_1/title = "Cells"
 tab_2/title = "Source Images"
 
-[node name="ProjectSettingsMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer" unique_id=1656959414]
+[node name="LayerSettingsMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer" unique_id=1656959414]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 metadata/_tab_index = 0
-metadata/_tab_name = "Project"
+metadata/_tab_name = "Layer"
 
-[node name="ProjectSettingsVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer" unique_id=2041465170]
+[node name="LayerSettingsVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer" unique_id=2041465170]
 layout_mode = 2
 
-[node name="ProjectNameHBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1656777230]
+[node name="LayerNameHBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox" unique_id=1656777230]
 layout_mode = 2
+tooltip_text = "The name of this layer."
 
-[node name="ProjectNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ProjectNameHBox" unique_id=1950631412]
+[node name="ProjectNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/LayerNameHBox" unique_id=1950631412]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Project Name"
+text = "Layer Name"
 
-[node name="ProjectName" type="LineEdit" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ProjectNameHBox" unique_id=170012122]
+[node name="ProjectName" type="LineEdit" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/LayerNameHBox" unique_id=170012122]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
-text = "New Project"
+text = "New Layer"
 placeholder_text = "Enter a name..."
 
-[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1493282639]
+[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox" unique_id=1493282639]
 visible = false
 layout_mode = 2
 
-[node name="ProjectBaseLayerResolutionHBox2" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1930577840]
+[node name="LayerBaseLayerResolutionHBox2" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox" unique_id=1930577840]
 layout_mode = 2
+tooltip_text = "How many different tiles this layer will consist of, both on the X and Y axis"
 theme_override_constants/separation = 10
 
-[node name="ProjectTypeLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ProjectBaseLayerResolutionHBox2" unique_id=187032594]
+[node name="ProjectTypeLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/LayerBaseLayerResolutionHBox2" unique_id=187032594]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Base Layer Resolution"
+text = "Layer Resolution"
 text_overrun_behavior = 3
 
-[node name="BaseLayerResolution" type="SpinBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ProjectBaseLayerResolutionHBox2" unique_id=589056581]
+[node name="BaseLayerResolution" type="SpinBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/LayerBaseLayerResolutionHBox2" unique_id=589056581]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 min_value = 2.0
 max_value = 4096.0
 value = 4.0
-suffix = "cells"
+suffix = "tiles"
 
-[node name="OverlayLayerCountHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=831575693]
+[node name="TileResolutionHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox" unique_id=80721096]
+layout_mode = 2
+tooltip_text = "How large on both the X and Y axis each tile will be, in pixels."
+theme_override_constants/separation = 10
+
+[node name="TileResolutionLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/TileResolutionHBox" unique_id=66275067]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Tile Resolution"
+text_overrun_behavior = 3
+
+[node name="TileResolution" type="SpinBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/TileResolutionHBox" unique_id=1488625659]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.5
+min_value = 1.0
+max_value = 4096.0
+value = 64.0
+suffix = "px"
+
+[node name="OverlayLayerCountHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox" unique_id=831575693]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="OverlayLayerCountLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/OverlayLayerCountHBox" unique_id=86023703]
+[node name="OverlayLayerCountLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/OverlayLayerCountHBox" unique_id=86023703]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Overlay Layer Count"
 text_overrun_behavior = 3
 
-[node name="OverlayLayerCount" type="SpinBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/OverlayLayerCountHBox" unique_id=877527768]
+[node name="OverlayLayerCount" type="SpinBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/OverlayLayerCountHBox" unique_id=877527768]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
@@ -211,34 +239,36 @@ max_value = 2.0
 value = 2.0
 suffix = "layers"
 
-[node name="TileExpansionsEnabledHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=221327917]
+[node name="TileExpansionsEnabledHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox" unique_id=221327917]
 layout_mode = 2
+tooltip_text = "Whether the layer ought to support tiles larger than 1x1. Disabling this can bring slight performance improvements in-engine."
 theme_override_constants/separation = 10
 
-[node name="TileExpansionsEnabledLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/TileExpansionsEnabledHBox" unique_id=1313446604]
+[node name="TileExpansionsEnabledLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/TileExpansionsEnabledHBox" unique_id=1313446604]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Tile Expansions Enabled"
 text_overrun_behavior = 3
 
-[node name="TileExpansionsEnabled" type="CheckButton" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/TileExpansionsEnabledHBox" unique_id=171674397]
+[node name="TileExpansionsEnabled" type="CheckButton" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/TileExpansionsEnabledHBox" unique_id=171674397]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
 button_pressed = true
 flat = true
 
-[node name="ColorModulationEnabledHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox" unique_id=1395989705]
+[node name="ColorModulationEnabledHBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox" unique_id=1395989705]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="ColorModulationsEnabledLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ColorModulationEnabledHBox" unique_id=450095078]
+[node name="ColorModulationsEnabledLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/ColorModulationEnabledHBox" unique_id=450095078]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Color Modulation Enabled"
 text_overrun_behavior = 3
 
-[node name="ColorModulationEnabled" type="CheckButton" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/ProjectSettingsMarginContainer/ProjectSettingsVBox/ColorModulationEnabledHBox" unique_id=1882427185]
+[node name="ColorModulationEnabled" type="CheckButton" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanel/VSplitContainer/TabContainer/LayerSettingsMarginContainer/LayerSettingsVBox/ColorModulationEnabledHBox" unique_id=1882427185]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.5
@@ -302,25 +332,71 @@ layout_mode = 2
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
 
 [node name="ViewPortRootPanel" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer/MarginContainer" unique_id=78163555]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_h2yge")
 
 [node name="OpenCreateProjectPromptLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel" unique_id=778023135]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 text = "No project is currently loaded. 
 Start by opening (File > Open Project...) or creating (File > New Project) a project ."
 horizontal_alignment = 1
 
-[node name="AddImagesPromptLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel" unique_id=1826896384]
+[node name="TileGridRootAspectRatioContainer" type="AspectRatioContainer" parent="RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel" unique_id=1408994889]
 layout_mode = 2
-size_flags_horizontal = 4
-text = "This project contains no source images yet.
-Add some in the Source Images tab in the top left."
-horizontal_alignment = 1
+
+[node name="TileGridRootMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel/TileGridRootAspectRatioContainer" unique_id=203310823]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="TileContainer" type="Control" parent="RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel/TileGridRootAspectRatioContainer/TileGridRootMarginContainer" unique_id=691735926]
+propagate_maximum_size = true
+layout_mode = 2
+mouse_filter = 1
+script = ExtResource("3_h2yge")
+metadata/_custom_type_script = "uid://cvgmkr65py4sy"
+
+[node name="RootTutorialMarginContainer" type="MarginContainer" parent="." unique_id=1963241074]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="FoldableContainer" type="FoldableContainer" parent="RootTutorialMarginContainer" unique_id=862919763]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+title = "Getting Started"
+
+[node name="MarginContainer" type="MarginContainer" parent="RootTutorialMarginContainer/FoldableContainer" unique_id=926324877]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="RootTutorialMarginContainer/FoldableContainer/MarginContainer" unique_id=76323620]
+layout_mode = 2
+text = "Here are a few first steps to set up 
+your project:
+
+ - Give your layer a name
+ - Configure your layer and tile resolutions
+ - Import source images for your tiles"
 
 [node name="ErrorBackground" type="ColorRect" parent="." unique_id=1413946035]
 visible = false
@@ -346,6 +422,14 @@ size = Vector2i(399, 100)
 popup_window = true
 force_native = true
 dialog_text = "The selected file is not a TTP project. Please select a different file and try again."
+
+[node name="TextureNotRightSizeDialog" type="AcceptDialog" parent="." unique_id=914078303]
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(399, 100)
+popup_window = true
+force_native = true
+dialog_text = "The resolution of the selected image is not a multiple of the configured tile resolution in your layer settings."
 
 [node name="UploadFileWindow" type="Window" parent="." unique_id=468806493]
 oversampling_override = 1.0
