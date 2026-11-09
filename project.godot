@@ -26,6 +26,7 @@ WebUtils="*uid://c7x2mf25lgvpr"
 GlobalFileAccess="*uid://cy3tbxy52tuuv"
 GlobalProjectManager="*uid://bo1q5s2r3hv4o"
 TileConfigurationDatabase="*uid://l1owvvgnagbt"
+SourceImagesDatabase="*uid://hq7a4qim3mmy"
 
 [display]
 
@@ -34,7 +35,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_todo/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_todo/plugin.cfg", "res://addons/line_edit_autocomplete_plugin/plugin.cfg")
 
 [physics]
 

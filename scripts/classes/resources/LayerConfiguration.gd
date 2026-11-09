@@ -3,6 +3,7 @@ class_name LayerConfiguration
 
 var layer_name : String = "New Layer"
 var resolution : int = 4
+var tile_resolution : int = 64
 
 static func from_save_object(object : Dictionary) -> LayerConfiguration:
 	var new_configuration : LayerConfiguration = LayerConfiguration.new()

@@ -14,7 +14,7 @@ const CONFIGURATION_FILE_NAME : String = "configuration.ttpc"
 signal project_loaded
 
 func load_project() -> ProjectOpenError:
-	var zip : FileAccess = await GlobalFileAccess.open(".zip")
+	var zip : FileAccess = await GlobalFileAccess.open_project()
 	
 	if zip == null:
 		return ProjectOpenError.CANCELLED
@@ -51,7 +51,7 @@ func save_project(_name : String) -> void:
 	zp.close()
 	
 	var file : FileAccess = FileAccess.open("user://saved/New Project.zip", FileAccess.READ)
-	GlobalFileAccess.save(file)
+	GlobalFileAccess.save_project(file)
 	
 func new_project() -> void:
 	layer_configuration = LayerConfiguration.new()

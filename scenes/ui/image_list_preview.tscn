@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://d0nl2jrmp4mf"]
+
+[ext_resource type="Script" uid="uid://dyoao7lah7f5k" path="res://scripts/image_list.gd" id="1_cvmr2"]
+[ext_resource type="Script" uid="uid://d2o2ddlkwgceb" path="res://scripts/load_image_button.gd" id="2_dkyu7"]
+[ext_resource type="Script" uid="uid://bjxh376ifjvgp" path="res://scripts/image_preview_entry.gd" id="3_0b7s5"]
+[ext_resource type="Texture2D" uid="uid://ct2ys4wig2wa0" path="res://assets/images/icon.png" id="4_bpn8y"]
+
+[node name="AlbedoImagesRootVBox" type="VBoxContainer" unique_id=114652556 node_paths=PackedStringArray("load_image_button", "column_count_spin_box", "image_list_grid_container", "image_template_entry")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cvmr2")
+load_image_button = NodePath("HBoxContainer/LoadImageButton")
+column_count_spin_box = NodePath("HBoxContainer/ColumnCountSpinBox")
+image_list_grid_container = NodePath("ScrollContainer/ImageListGridContainer")
+image_template_entry = NodePath("ScrollContainer/ImageListGridContainer/TemplateImageEntry2")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=141655082]
+layout_mode = 2
+
+[node name="LoadImageButton" type="Button" parent="HBoxContainer" unique_id=393312707]
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Load image..."
+script = ExtResource("2_dkyu7")
+
+[node name="ColumCountLabel" type="Label" parent="HBoxContainer" unique_id=1018380970]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Colums: "
+
+[node name="ColumnCountSpinBox" type="SpinBox" parent="HBoxContainer" unique_id=652368062]
+layout_mode = 2
+size_flags_horizontal = 8
+min_value = 1.0
+max_value = 5.0
+value = 3.0
+
+[node name="HSeparator" type="HSeparator" parent="." unique_id=288433145]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1850312274]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="ImageListGridContainer" type="GridContainer" parent="ScrollContainer" unique_id=877043056]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 3
+
+[node name="TemplateImageEntry2" type="VBoxContainer" parent="ScrollContainer/ImageListGridContainer" unique_id=274817293 node_paths=PackedStringArray("texture_preview_texture_rect", "remove_texture_button", "texture_name_line_edit", "containing_vbox")]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 3
+script = ExtResource("3_0b7s5")
+texture_preview_texture_rect = NodePath("TexturePreviewTextureRect")
+remove_texture_button = NodePath("TexturePreviewTextureRect/RemoveTextureButton")
+texture_name_line_edit = NodePath("TextureNameLineEdit")
+containing_vbox = NodePath("../../..")
+
+[node name="TexturePreviewTextureRect" type="TextureRect" parent="ScrollContainer/ImageListGridContainer/TemplateImageEntry2" unique_id=291869705]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture = ExtResource("4_bpn8y")
+expand_mode = 5
+stretch_mode = 4
+
+[node name="RemoveTextureButton" type="Button" parent="ScrollContainer/ImageListGridContainer/TemplateImageEntry2/TexturePreviewTextureRect" unique_id=2123140168]
+layout_mode = 1
+offset_right = 78.0
+offset_bottom = 30.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Remove"
+
+[node name="TextureNameLineEdit" type="LineEdit" parent="ScrollContainer/ImageListGridContainer/TemplateImageEntry2" unique_id=990117157]
+layout_mode = 2
+text = "/home/user/Downloads/texture.png"
+flat = true
+select_all_on_focus = true

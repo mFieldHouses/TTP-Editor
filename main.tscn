@@ -3,11 +3,10 @@
 [ext_resource type="Theme" uid="uid://b0e40jr1wqanf" path="res://resources/themes/default.tres" id="1_ig7tw"]
 [ext_resource type="Script" uid="uid://chch48at0toib" path="res://main.gd" id="2_0xm2m"]
 [ext_resource type="Script" uid="uid://b50k4ytw8vj33" path="res://scripts/tile_configuration_parent.gd" id="3_1bvp3"]
-[ext_resource type="Script" uid="uid://dyoao7lah7f5k" path="res://scripts/image_list.gd" id="3_5vw27"]
-[ext_resource type="Texture2D" uid="uid://ct2ys4wig2wa0" path="res://assets/images/icon.png" id="3_7mycd"]
-[ext_resource type="Script" uid="uid://bjxh376ifjvgp" path="res://scripts/image_preview_entry.gd" id="3_272bh"]
+[ext_resource type="PackedScene" uid="uid://d0nl2jrmp4mf" path="res://scenes/ui/image_list_preview.tscn" id="3_efxa6"]
 [ext_resource type="Script" uid="uid://cvgmkr65py4sy" path="res://scripts/classes/nodes/TileContainer.gd" id="3_h2yge"]
 [ext_resource type="Script" uid="uid://chxlhgbxvnfh7" path="res://scripts/tile_configuration.gd" id="4_lquwl"]
+[ext_resource type="Script" uid="uid://q3x67srg5rk4" path="res://scripts/texture_name_lineedit.gd" id="9_4c57u"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_h2yge"]
 font_size = 18
@@ -29,6 +28,16 @@ content_margin_bottom = 0.0
 bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_detail = 5
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kek77"]
+content_margin_left = 30.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.6, 0.6, 0.6, 0)
+corner_radius_bottom_right = 1
+corner_radius_bottom_left = 1
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h2yge"]
 bg_color = Color(0.13333334, 0.13333334, 0.13333334, 1)
 corner_radius_top_left = 10
@@ -36,7 +45,7 @@ corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
-[node name="Root" type="Control" unique_id=1810646056 node_paths=PackedStringArray("side_bar_root_panel_container", "error_background", "upload_file_window", "upload_file_window_progress_bar", "file_error_dialog", "not_a_project_file_dialog", "open_create_project_prompt_label", "file_menu_button", "editor_menu_button", "side_bar_v_split", "tile_container", "tile_configuration_parent")]
+[node name="Root" type="Control" unique_id=1810646056 node_paths=PackedStringArray("side_bar_root_panel_container", "error_background", "upload_file_window", "upload_file_window_progress_bar", "file_error_dialog", "not_a_project_file_dialog", "texture_not_right_size_dialog", "open_create_project_prompt_label", "file_menu_button", "editor_menu_button", "side_bar_v_split", "tile_container", "tile_configuration_parent")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -51,6 +60,7 @@ upload_file_window = NodePath("UploadFileWindow")
 upload_file_window_progress_bar = NodePath("UploadFileWindow/MarginContainer/VBoxContainer/ProgressBar")
 file_error_dialog = NodePath("FileErrorDialog")
 not_a_project_file_dialog = NodePath("NotAProjectFileDialog")
+texture_not_right_size_dialog = NodePath("TextureNotRightSizeDialog")
 open_create_project_prompt_label = NodePath("RootVBox/WorkSpaceRootSplitContainer/MarginContainer/ViewPortRootPanel/OpenCreateProjectPromptLabel")
 file_menu_button = NodePath("RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox/FileMenuButton")
 editor_menu_button = NodePath("RootVBox/ToolbarRootMarginContainer/ToolBarRootHBox/EditorMenuButton")
@@ -152,6 +162,7 @@ custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 current_tab = 1
 tab_0/title = "Layer"
+tab_1/title = "Source Images"
 
 [node name="LayerSettingsMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer" unique_id=1656959414]
 visible = false
@@ -287,9 +298,11 @@ current_tab = 0
 tab_0/title = "Albedo"
 tab_1/title = "Color Modulation Mask"
 tab_2/title = "ORM"
+tab_3/title = "Normal Map"
 metadata/_tab_index = 1
+metadata/_tab_name = "Source Images"
 
-[node name="AlbedoImagesMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer" unique_id=1012698258]
+[node name="AlbedoImagesMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer" unique_id=1314875364]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
@@ -298,301 +311,50 @@ theme_override_constants/margin_bottom = 0
 metadata/_tab_index = 0
 metadata/_tab_name = "Albedo"
 
-[node name="DiffuseImagesRootVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer" unique_id=577681245 node_paths=PackedStringArray("load_image_button", "column_count_spin_box", "image_list_grid_container")]
-layout_mode = 2
-script = ExtResource("3_5vw27")
-load_image_button = NodePath("HBoxContainer/LoadImageButton")
-column_count_spin_box = NodePath("HBoxContainer/ColumnCountSpinBox")
-image_list_grid_container = NodePath("ScrollContainer/ImageListGridContainer")
-
-[node name="HBoxContainer" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox" unique_id=720399266]
+[node name="AlbedoImagesRootVBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer" unique_id=114652556 instance=ExtResource("3_efxa6")]
 layout_mode = 2
 
-[node name="LoadImageButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/HBoxContainer" unique_id=198807760]
-layout_mode = 2
-size_flags_horizontal = 0
-text = "Load image..."
-
-[node name="ColumCountLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/HBoxContainer" unique_id=1434667997]
-layout_mode = 2
-size_flags_horizontal = 10
-text = "Colums: "
-
-[node name="ColumnCountSpinBox" type="SpinBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/HBoxContainer" unique_id=1398296228]
-layout_mode = 2
-size_flags_horizontal = 8
-min_value = 1.0
-max_value = 5.0
-value = 3.0
-
-[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox" unique_id=2040845821]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox" unique_id=783220970]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ImageListGridContainer" type="GridContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer" unique_id=750069014]
-layout_mode = 2
-size_flags_horizontal = 3
-columns = 3
-
-[node name="TemplateImageEntry2" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=210996141 node_paths=PackedStringArray("texture_preview_texture_rect", "remove_texture_button", "texture_name_label")]
-layout_mode = 2
-size_flags_horizontal = 3
-script = ExtResource("3_272bh")
-texture_preview_texture_rect = NodePath("TexturePreviewTextureRect")
-remove_texture_button = NodePath("TexturePreviewTextureRect/RemoveTextureButton")
-texture_name_label = NodePath("TextureNameLabel")
-
-[node name="TexturePreviewTextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry2" unique_id=1409369952]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
-expand_mode = 5
-stretch_mode = 4
-
-[node name="RemoveTextureButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry2/TexturePreviewTextureRect" unique_id=1471457381]
-layout_mode = 1
-offset_right = 78.0
-offset_bottom = 30.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "Remove"
-
-[node name="TextureNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry2" unique_id=320372488]
-layout_mode = 2
-text = "/home/mathias/Downloads/texture.png"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="TemplateImageEntry3" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=1212190087 node_paths=PackedStringArray("texture_preview_texture_rect", "remove_texture_button", "texture_name_label")]
-layout_mode = 2
-size_flags_horizontal = 3
-script = ExtResource("3_272bh")
-texture_preview_texture_rect = NodePath("TexturePreviewTextureRect")
-remove_texture_button = NodePath("TexturePreviewTextureRect/RemoveTextureButton")
-texture_name_label = NodePath("TextureNameLabel")
-
-[node name="TexturePreviewTextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry3" unique_id=1083913253]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
-expand_mode = 5
-stretch_mode = 4
-
-[node name="RemoveTextureButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry3/TexturePreviewTextureRect" unique_id=2101647195]
-layout_mode = 1
-offset_right = 78.0
-offset_bottom = 30.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "Remove"
-
-[node name="TextureNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry3" unique_id=679352013]
-layout_mode = 2
-text = "/home/mathias/Downloads/texture.png"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="TemplateImageEntry4" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=1784933679 node_paths=PackedStringArray("texture_preview_texture_rect", "remove_texture_button", "texture_name_label")]
-layout_mode = 2
-size_flags_horizontal = 3
-script = ExtResource("3_272bh")
-texture_preview_texture_rect = NodePath("TexturePreviewTextureRect")
-remove_texture_button = NodePath("TexturePreviewTextureRect/RemoveTextureButton")
-texture_name_label = NodePath("TextureNameLabel")
-
-[node name="TexturePreviewTextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry4" unique_id=1435407958]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
-expand_mode = 5
-stretch_mode = 4
-
-[node name="RemoveTextureButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry4/TexturePreviewTextureRect" unique_id=1377365445]
-layout_mode = 1
-offset_right = 78.0
-offset_bottom = 30.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "Remove"
-
-[node name="TextureNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry4" unique_id=722515684]
-layout_mode = 2
-text = "/home/mathias/Downloads/texture.png"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="TemplateImageEntry5" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=86147112 node_paths=PackedStringArray("texture_preview_texture_rect", "remove_texture_button", "texture_name_label")]
-layout_mode = 2
-size_flags_horizontal = 3
-script = ExtResource("3_272bh")
-texture_preview_texture_rect = NodePath("TexturePreviewTextureRect")
-remove_texture_button = NodePath("TexturePreviewTextureRect/RemoveTextureButton")
-texture_name_label = NodePath("TextureNameLabel")
-
-[node name="TexturePreviewTextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry5" unique_id=202470620]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
-expand_mode = 5
-stretch_mode = 4
-
-[node name="RemoveTextureButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry5/TexturePreviewTextureRect" unique_id=534075131]
-layout_mode = 1
-offset_right = 78.0
-offset_bottom = 30.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "Remove"
-
-[node name="TextureNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry5" unique_id=1137942418]
-layout_mode = 2
-text = "/home/mathias/Downloads/texture.png"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="TemplateImageEntry6" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=1693952555 node_paths=PackedStringArray("texture_preview_texture_rect", "remove_texture_button", "texture_name_label")]
-layout_mode = 2
-size_flags_horizontal = 3
-script = ExtResource("3_272bh")
-texture_preview_texture_rect = NodePath("TexturePreviewTextureRect")
-remove_texture_button = NodePath("TexturePreviewTextureRect/RemoveTextureButton")
-texture_name_label = NodePath("TextureNameLabel")
-
-[node name="TexturePreviewTextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry6" unique_id=749079119]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
-expand_mode = 5
-stretch_mode = 4
-
-[node name="RemoveTextureButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry6/TexturePreviewTextureRect" unique_id=225072013]
-layout_mode = 1
-offset_right = 78.0
-offset_bottom = 30.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "Remove"
-
-[node name="TextureNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry6" unique_id=404292622]
-layout_mode = 2
-text = "/home/mathias/Downloads/texture.png"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="TemplateImageEntry7" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=840569692 node_paths=PackedStringArray("texture_preview_texture_rect", "remove_texture_button", "texture_name_label")]
-layout_mode = 2
-size_flags_horizontal = 3
-script = ExtResource("3_272bh")
-texture_preview_texture_rect = NodePath("TexturePreviewTextureRect")
-remove_texture_button = NodePath("TexturePreviewTextureRect/RemoveTextureButton")
-texture_name_label = NodePath("TextureNameLabel")
-
-[node name="TexturePreviewTextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry7" unique_id=1084473123]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
-expand_mode = 5
-stretch_mode = 4
-
-[node name="RemoveTextureButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry7/TexturePreviewTextureRect" unique_id=27612857]
-layout_mode = 1
-offset_right = 78.0
-offset_bottom = 30.0
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "Remove"
-
-[node name="TextureNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/AlbedoImagesMarginContainer/DiffuseImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry7" unique_id=89380216]
-layout_mode = 2
-text = "/home/mathias/Downloads/texture.png"
-horizontal_alignment = 1
-autowrap_mode = 3
-
-[node name="ColorModulationMaskImagesMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer" unique_id=633497114]
+[node name="ColorModulationMaskImagesMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer" unique_id=682682549]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
 metadata/_tab_index = 1
 metadata/_tab_name = "Color Modulation Mask"
 
-[node name="ColorModulationMaskImagesRootVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer" unique_id=130653166]
+[node name="ColorModulationMaskImagesRootVBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer" unique_id=1398172235 instance=ExtResource("3_efxa6")]
 layout_mode = 2
+type = 1
 
-[node name="LoadImageButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer/ColorModulationMaskImagesRootVBox" unique_id=1538797441]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Load image"
-
-[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer/ColorModulationMaskImagesRootVBox" unique_id=1210162924]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer/ColorModulationMaskImagesRootVBox" unique_id=1849373254]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ImageListGridContainer" type="GridContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer/ColorModulationMaskImagesRootVBox/ScrollContainer" unique_id=651536140]
-layout_mode = 2
-columns = 2
-
-[node name="TemplateImageEntry" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer/ColorModulationMaskImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=932494132]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer/ColorModulationMaskImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry" unique_id=914286894]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
-
-[node name="TemplateImageEntry2" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer/ColorModulationMaskImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=2099633541]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ColorModulationMaskImagesMarginContainer/ColorModulationMaskImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry2" unique_id=529674435]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
-
-[node name="OrmImagesMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer" unique_id=71199642]
+[node name="ORMImagesMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer" unique_id=1547802199]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
 metadata/_tab_index = 2
 metadata/_tab_name = "ORM"
 
-[node name="ORMImagesRootVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/OrmImagesMarginContainer" unique_id=2136604877]
+[node name="ORMImagesRootVBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/ORMImagesMarginContainer" unique_id=2041251846 instance=ExtResource("3_efxa6")]
+layout_mode = 2
+type = 2
+
+[node name="NormalMapImagesMarginContainer" type="MarginContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer" unique_id=1571712103]
 visible = false
 layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 0
+metadata/_tab_index = 3
+metadata/_tab_name = "Normal Map"
 
-[node name="LoadImageButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/OrmImagesMarginContainer/ORMImagesRootVBox" unique_id=718551200]
+[node name="NormalMapImagesRootVBox" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/NormalMapImagesMarginContainer" unique_id=685660323 instance=ExtResource("3_efxa6")]
 layout_mode = 2
-size_flags_horizontal = 4
-text = "Load image"
-
-[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/OrmImagesMarginContainer/ORMImagesRootVBox" unique_id=727375268]
-layout_mode = 2
-
-[node name="ScrollContainer" type="ScrollContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/OrmImagesMarginContainer/ORMImagesRootVBox" unique_id=795291341]
-layout_mode = 2
-size_flags_vertical = 3
-
-[node name="ImageListGridContainer" type="GridContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/OrmImagesMarginContainer/ORMImagesRootVBox/ScrollContainer" unique_id=1818671230]
-layout_mode = 2
-columns = 2
-
-[node name="TemplateImageEntry" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/OrmImagesMarginContainer/ORMImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=2038932997]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/OrmImagesMarginContainer/ORMImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry" unique_id=69089993]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
-
-[node name="TemplateImageEntry2" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/OrmImagesMarginContainer/ORMImagesRootVBox/ScrollContainer/ImageListGridContainer" unique_id=1304504916]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="TextureRect" type="TextureRect" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TabContainer/ImageTypesTabContainer/OrmImagesMarginContainer/ORMImagesRootVBox/ScrollContainer/ImageListGridContainer/TemplateImageEntry2" unique_id=353664823]
-layout_mode = 2
-texture = ExtResource("3_7mycd")
+type = 3
 
 [node name="TileConfigurationPanelContainer" type="PanelContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer" unique_id=2084254055]
 custom_minimum_size = Vector2(0, 200)
@@ -621,20 +383,22 @@ horizontal_alignment = 1
 layout_mode = 2
 
 [node name="NoTileSelectedLabe" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=345027019]
+visible = false
 layout_mode = 2
 size_flags_vertical = 6
 text = "No tile selected to configure."
 horizontal_alignment = 1
 
-[node name="TileConfiguration" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=1613134191 node_paths=PackedStringArray("tile_name", "tile_uninitialized_v_box", "tile_configuration_properties_v_box", "initialize_tile_button")]
-visible = false
+[node name="TileConfiguration" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer" unique_id=1613134191 node_paths=PackedStringArray("tile_name", "albedo_texture_name", "tile_uninitialized_v_box", "tile_configuration_properties_v_box", "initialize_tile_button", "clear_tile_button")]
 layout_mode = 2
 size_flags_vertical = 3
 script = ExtResource("4_lquwl")
 tile_name = NodePath("TileConfigurationPropertiesVBox/TileNameVBox/TileName")
+albedo_texture_name = NodePath("TileConfigurationPropertiesVBox/TexturesFoldableContainer/AlbedoTextureNameVBox/AlbedoTextureName")
 tile_uninitialized_v_box = NodePath("TileUninitializedVBox")
 tile_configuration_properties_v_box = NodePath("TileConfigurationPropertiesVBox")
 initialize_tile_button = NodePath("TileUninitializedVBox/InitializeTileButton")
+clear_tile_button = NodePath("TileConfigurationPropertiesVBox/ClearTileButton")
 
 [node name="TileConfigurationPropertiesVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration" unique_id=2056257152]
 layout_mode = 2
@@ -642,7 +406,6 @@ layout_mode = 2
 [node name="TileNameVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox" unique_id=457166939]
 layout_mode = 2
 tooltip_text = "How many different tiles this layer will consist of, both on the X and Y axis"
-theme_override_constants/separation = 10
 
 [node name="TileNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox/TileNameVBox" unique_id=451091875]
 layout_mode = 2
@@ -654,7 +417,40 @@ text_overrun_behavior = 3
 layout_mode = 2
 text = "New Tile"
 
+[node name="HSeparator" type="HSeparator" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox" unique_id=1525705558]
+layout_mode = 2
+
+[node name="TexturesFoldableContainer" type="FoldableContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox" unique_id=2118115883]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kek77")
+folded = true
+title = "Textures"
+
+[node name="AlbedoTextureNameVBox" type="HBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox/TexturesFoldableContainer" unique_id=1701528997]
+visible = false
+layout_mode = 2
+tooltip_text = "How many different tiles this layer will consist of, both on the X and Y axis"
+
+[node name="AlbedoTextureNameLabel" type="Label" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox/TexturesFoldableContainer/AlbedoTextureNameVBox" unique_id=928818105]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Albedo Texture Name"
+
+[node name="AlbedoTextureName" type="LineEdit" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox/TexturesFoldableContainer/AlbedoTextureNameVBox" unique_id=1117627233]
+layout_mode = 2
+size_flags_horizontal = 3
+virtual_keyboard_enabled = false
+script = ExtResource("9_4c57u")
+case_insensitive = true
+metadata/_custom_type_script = "uid://cxtdun3ap68qx"
+
+[node name="ClearTileButton" type="Button" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration/TileConfigurationPropertiesVBox" unique_id=1753951775]
+layout_mode = 2
+size_flags_vertical = 10
+text = "Clear Tile"
+
 [node name="TileUninitializedVBox" type="VBoxContainer" parent="RootVBox/WorkSpaceRootSplitContainer/SideBarRootPanelContainer/VSplitContainer/TileConfigurationPanelContainer/MarginContainer/VBoxContainer/TileConfiguration" unique_id=1986440178]
+visible = false
 layout_mode = 2
 size_flags_vertical = 6
 

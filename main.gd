@@ -12,6 +12,7 @@ extends Control
 
 @export var file_error_dialog : AcceptDialog
 @export var not_a_project_file_dialog : AcceptDialog
+@export var texture_not_right_size_dialog: AcceptDialog
 
 # Labels
 @export var open_create_project_prompt_label: Label
@@ -39,6 +40,7 @@ func _ready() -> void:
 	tile_container.tile_pos_selected.connect(_tile_button_pressed)
 	GlobalProjectManager.project_loaded.connect(func(): side_bar_root_panel_container.modulate.a = 1.0)
 	GlobalProjectManager.project_loaded.connect(open_create_project_prompt_label.set_visible.bind(false))
+	SourceImagesDatabase.texture_not_right_size.connect(_dialog_pop_up.bind(texture_not_right_size_dialog))
 	
 	side_bar_root_panel_container.modulate.a = 0.0
 	

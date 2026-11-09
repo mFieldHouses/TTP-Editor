@@ -7,6 +7,16 @@ signal progress_changed(progress_factor : float)
 enum FileDialogCloseStatus {SUCCESS, CANCEL, ERROR}
 signal _file_dialogue_closed(status : FileDialogCloseStatus, path : String, data : PackedByteArray)
 
+enum FileType {
+	IMAGE,
+	ZIP
+}
+
+const filetype_data : Dictionary[FileType, Array] = {
+	FileType.IMAGE: [".png", "PNG Images", "image/png"],
+	FileType.ZIP: [".zip", "ZIP Files", "application/zip"]
+}
+
 func _ready() -> void:
 	fd = FileDialog.new()
 	fd.use_native_dialog = true
@@ -14,22 +24,23 @@ func _ready() -> void:
 	
 	fd.canceled.connect(_file_dialogue_closed.emit.bind(FileDialogCloseStatus.CANCEL, "", 0))
 	fd.file_selected.connect(_fd_file_selected)
+	fd.files_selected.connect(_fd_files_selected)
 	
 	add_child(fd)
 	
 	WebFileAccess.progress.connect(_progress_changed)
 
 ## Opens a project file from the device.
-func open(filters : String = "*") -> FileAccess:
+func open_project() -> FileAccess:
 	match OS.get_name():
 		"Web":
-			return await _open_project_web(filters)
+			return await _open_web(FileType.ZIP)
 		"Linux", "macOS", "Windows":
-			return await _open_project_native(filters)
+			return await _open_native(FileType.ZIP)
 		
 	return null
 
-func save(file : FileAccess) -> Error:
+func save_project(file : FileAccess) -> Error:
 	match OS.get_name():
 		"Web":
 			_save_project_web(file)
@@ -38,9 +49,18 @@ func save(file : FileAccess) -> Error:
 	
 	return OK
 
+func open_image(allow_multiple : bool = false) -> FileAccess:
+	match OS.get_name():
+		"Web":
+			return await _open_web(FileType.IMAGE, allow_multiple)
+		"Linux", "macOS", "Windows":
+			return await _open_native(FileType.IMAGE, allow_multiple)
+		
+	return null
+
 ## Function that handles loading files when running in Web
-func _open_project_web(filters : String) -> FileAccess:
-	WebFileAccess.open(filters)
+func _open_web(file_type : FileType, allow_multiple : bool = false) -> FileAccess:
+	WebFileAccess.open(filetype_data[file_type][0])
 	
 	var results : Array = await _file_dialogue_closed
 	
@@ -62,9 +82,15 @@ func _open_project_web(filters : String) -> FileAccess:
 	return file
 
 ## Function that handles loading files when running native mode (including as an addon)
-func _open_project_native(filters : String) -> FileAccess:
+func _open_native(file_type : FileType, allow_multiple : bool = false) -> FileAccess:
 	fd.current_dir = OS.get_system_dir(OS.SYSTEM_DIR_DESKTOP)
-	fd.add_filter("*.zip", "ZIP Files", "application/zip")
+	
+	if allow_multiple:
+		fd.file_mode = FileDialog.FILE_MODE_OPEN_FILES
+	else:
+		fd.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	
+	fd.add_filter(filetype_data[file_type][0].replace(".", "*."), filetype_data[file_type][1], filetype_data[file_type][2])
 	fd.popup_file_dialog()
 	
 	var results : Array = await _file_dialogue_closed
@@ -87,12 +113,6 @@ func _open_project_native(filters : String) -> FileAccess:
 	
 	return target_file
 
-func _open_texture_web() -> void:
-	pass
-
-func _open_texture_native() -> void:
-	pass
-
 func _progress_changed(current_count : int, max_count : int) -> void:
 	progress_changed.emit(float(current_count)/float(max_count))
 
@@ -113,3 +133,6 @@ func _save_project_native(file : FileAccess) -> void:
 
 func _fd_file_selected(path : String) -> void:
 	GlobalFileAccess._file_dialogue_closed.emit(FileDialogCloseStatus.SUCCESS, path, 0)
+
+func _fd_files_selected(paths : Array[String]) -> void:
+	GlobalFileAccess._file_dialogue_closed.emit(FileDialogCloseStatus.SUCCESS, paths, 0)
