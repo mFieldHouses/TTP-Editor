@@ -17,9 +17,10 @@ func _ready() -> void:
 	albedo_texture_name.text_changed.connect(func(text : String): _texture_name_changed(SourceImagesDatabase.ImageCategory.ALBEDO, text))
 	SourceImagesDatabase.image_picked.connect(_image_picked)
 	
+	
 	initialize_tile_button.button_down.connect(_initialize_edited_configuration)
 	clear_tile_button.button_down.connect(_clear_edited_configuration)
-
+	
 func show_tile_configuration(configuration : TileConfiguration) -> void:
 	if edited_configuration:
 		edited_configuration.changed.disconnect(_load_edited_tile_configuration)
@@ -29,9 +30,9 @@ func show_tile_configuration(configuration : TileConfiguration) -> void:
 	if configuration:
 		edited_configuration.changed.connect(_load_edited_tile_configuration)
 	
-	tile_uninitialized_v_box.visible = configuration.uninitialized
-	tile_configuration_properties_v_box.visible = !configuration.uninitialized
-	
+		tile_uninitialized_v_box.visible = configuration.uninitialized
+		tile_configuration_properties_v_box.visible = !configuration.uninitialized
+
 	if _can_change_edited_configuration():
 		_load_edited_tile_configuration()
 

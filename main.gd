@@ -88,4 +88,7 @@ func _notification_pop_out(window : Window) -> void:
 	window.visible = false
 
 func _tile_button_pressed(pos : Vector2i) -> void:
-	tile_configuration_parent.show_tile_configuration(TileConfigurationDatabase.tile_configurations[pos])
+	if pos == Vector2i(-1, -1):
+		tile_configuration_parent.show_tile_configuration(null)
+	else:
+		tile_configuration_parent.show_tile_configuration(TileConfigurationDatabase.tile_configurations[pos])

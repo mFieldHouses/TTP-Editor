@@ -42,6 +42,10 @@ func remove_image(image_type : ImageCategory, image_name : String) -> void:
 	database_changed.emit()
 
 func rename_texture(type : ImageCategory, old_name : String, new_name : String) -> void:
+	if imported_images[type].has(old_name):
+		imported_images[type][new_name] = imported_images[type][old_name]
+		imported_images[type].erase(old_name)
+	
 	texture_name_changed.emit(old_name, new_name)
 
 func get_image_multiple_size(image_type : ImageCategory, image_name : String) -> Vector2i:

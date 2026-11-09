@@ -1,0 +1,9 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://kri6hodir65y"]
+
+[ext_resource type="Shader" uid="uid://bm8vywj3hw102" path="res://assets/shaders/flash.gdshader" id="1_sr65x"]
+
+[resource]
+shader = ExtResource("1_sr65x")
+shader_parameter/period = 0.5
+shader_parameter/color_1 = Color(1, 1, 1, 0)
+shader_parameter/color_2 = Color(1, 1, 1, 0.6392157)
