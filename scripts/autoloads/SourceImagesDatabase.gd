@@ -6,6 +6,7 @@ signal texture_not_right_size
 signal image_picked(image_type : ImageCategory, image_name : String)
 
 enum ImageCategory {ALBEDO, COLOR_MODULATION_MASK, ORM, NORMAL}
+enum Channel {ALBEDO, COLOR_MODULATION_MASK, ORM, NORMAL, TILE_EXPANSIONS}
 
 # Dictionary of all imported images sorted by their type
 var imported_images : Dictionary[ImageCategory, Dictionary] = {
@@ -56,3 +57,6 @@ func get_image_multiple_size(image_type : ImageCategory, image_name : String) ->
 		imported_images[image_type][image_name].get_width() / GlobalProjectManager.layer_configuration.tile_resolution, 
 		imported_images[image_type][image_name].get_height() / GlobalProjectManager.layer_configuration.tile_resolution
 	)
+
+func generate_channel_image(channel : Channel) -> Image:
+	return null
